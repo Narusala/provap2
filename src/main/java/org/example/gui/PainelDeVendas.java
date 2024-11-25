@@ -85,7 +85,7 @@ public class PainelDeVendas {
                             (String) tblItensVenda.getModel().getValueAt(i,1),
                             Integer.valueOf((String) tblItensVenda.getModel().getValueAt(i,2)),
                             (Integer) tblItensVenda.getModel().getValueAt(i,3),
-                            new BigDecimal(String.valueOf(tblItensVenda.getModel().getValueAt(i,4)))
+                            new BigDecimal(String.valueOf(tblItensVenda.getModel().getValueAt(i,    4)))
                     ));
                 }
 

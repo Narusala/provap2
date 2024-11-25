@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Vector;
 
 public class CadastroProdutos {
@@ -51,6 +52,48 @@ public class CadastroProdutos {
                 }
                 attProductTable();
                 JOptionPane.showMessageDialog(null, "Cadastrado com Sucesso!");
+            }
+        });
+        deletarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String sql = "DELETE FROM PRODUTOS WHERE id_produto = ?";
+                String estoqueSql = "DELETE FROM ESTOQUE WHERE id_produto = ?";
+                try (Connection conn = new DBConnection().getConnection();
+                     PreparedStatement stmt = conn.prepareStatement(estoqueSql)) {
+
+                    Arrays.stream(tableProdutos.getSelectedRows()).forEach(i -> {
+                        try {
+                            stmt.setInt(1, (int) tableProdutos.getValueAt(i,0));
+                            stmt.execute();
+                        } catch (SQLException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    });
+
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Erro ao deletar produto: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+                }
+                try (Connection conn = new DBConnection().getConnection();
+                     PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+                    Arrays.stream(tableProdutos.getSelectedRows()).forEach(i -> {
+                        try {
+                            stmt.setInt(1, (int) tableProdutos.getValueAt(i,0));
+                            stmt.execute();
+                        } catch (SQLException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    });
+
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Erro ao deletar produto: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+                }
+
+                attProductTable();
+                JOptionPane.showMessageDialog(null, "Deletado com Sucesso!");
             }
         });
         fillFornecedorComboBox();
