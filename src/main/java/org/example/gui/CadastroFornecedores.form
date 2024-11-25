@@ -104,14 +104,6 @@
           <text value="Salvar"/>
         </properties>
       </component>
-      <component id="dbbb1" class="javax.swing.JButton" binding="deletarButton" default-binding="true">
-        <constraints>
-          <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Deletar"/>
-        </properties>
-      </component>
       <scrollpane id="63f37" binding="spFornecedores">
         <constraints>
           <grid row="7" column="0" row-span="1" col-span="3" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
