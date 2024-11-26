@@ -13,7 +13,7 @@ public class ItemsVendaDTO {
 
     private Integer idProduto;
     private String nomeProduto;
-    private Integer codigoDeBarras;
+    private Long codigoDeBarras;
     private Integer quantidade;
     private BigDecimal precoUnitario;
 

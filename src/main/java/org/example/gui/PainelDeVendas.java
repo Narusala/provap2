@@ -27,8 +27,8 @@ public class PainelDeVendas {
     private JButton buscarButton;
     private JPanel painelPrincipalVendas;
     private JComboBox cbFormasPago;
-    private DefaultTableModel modelItemVenda = new DefaultTableModel(new String[]{"ID Produto", "Nome Produto", "Código de Barras", "Quantidade", "Preço Unitario"}, 0);
-
+    private String[] colunasItemVenda = new String[]{"ID Produto", "Nome Produto", "Código de Barras", "Quantidade", "Preço Unitario"};
+    private DefaultTableModel modelItemVenda = new DefaultTableModel(colunasItemVenda,0);
 
     public PainelDeVendas() {
         buscarButton.addActionListener(new ActionListener() {
@@ -83,7 +83,7 @@ public class PainelDeVendas {
                     itensVenda.add(new ItemsVendaDTO(
                             (Integer) tblItensVenda.getModel().getValueAt(i,0),
                             (String) tblItensVenda.getModel().getValueAt(i,1),
-                            Integer.valueOf((String) tblItensVenda.getModel().getValueAt(i,2)),
+                            Long.valueOf((String) tblItensVenda.getModel().getValueAt(i,2)),
                             (Integer) tblItensVenda.getModel().getValueAt(i,3),
                             new BigDecimal(String.valueOf(tblItensVenda.getModel().getValueAt(i,    4)))
                     ));
@@ -106,12 +106,20 @@ public class PainelDeVendas {
                         } catch (SQLException ex) {
                             throw new RuntimeException(ex);
                         }
+                        try {
+                            PreparedStatement sqlDetalheVenda = con.prepareStatement("UPDATE ESTOQUE SET quantidade = quantidade -1 where id_produto = ?");
+                            sqlDetalheVenda.setInt(1, item.getIdProduto());
+                            sqlDetalheVenda.execute();
+                        } catch (SQLException ex) {
+                            throw new RuntimeException(ex);
+                        }
                     });
 
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }
                 JOptionPane.showMessageDialog(null, "Venda realizada com Sucesso!");
+                resetTableProdutos();
             }
         });
     }
@@ -127,6 +135,12 @@ public class PainelDeVendas {
             totalvalue += (Double) tblItensVenda.getModel().getValueAt(i,4);
         }
         txtTotal.setText(totalvalue.toString());
+    }
+
+    private void resetTableProdutos() {
+        String[] colunas = colunasItemVenda;
+        DefaultTableModel modeloTabela = new DefaultTableModel(colunas, 0);
+        tblItensVenda.setModel(modeloTabela);
     }
 
     private void attTableProdutos() {
